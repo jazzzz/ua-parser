@@ -1,12 +1,7 @@
 var path = require('path'), 
     fs = require('fs'),
-    yaml = require('yamlparser'),
-    Results = require('./lib/results').BackwardsCompatResults;
-
-var file = path.join(__dirname, '..', 'regexes.yaml'),
-    regexes = fs.readFileSync(file, 'utf8');
-
-regexes = yaml.eval(regexes);
+    Results = require('./lib/results').BackwardsCompatResults,
+    regexes = require('./regexes.json');
 
 var parseUA = require('./lib/ua').makeParser(regexes.user_agent_parsers);
 exports.parseUA = parseUA;

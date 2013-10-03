@@ -46,10 +46,8 @@
       "url": "https://raw.github.com/tobie/ua-parser/master/js/LICENSE"
     }
   ],
-  "dependencies": {
-    "yamlparser": ">=0.0.2"
-  },
   "devDependencies": {
+    "yamlparser": ">=0.0.2",
     "mocha": "*"
   },
   "scripts": {
