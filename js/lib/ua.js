@@ -1,17 +1,14 @@
-var startsWithDigit = require('./helpers').startsWithDigit,
-    OS = require('./os').OS;
+exports.makeDefault = function makeDefault(str) {
+    return {
+        userAgent: str,
+        family: "Other",
+        major: null,
+        minor: null,
+        patch: null
+    };
+};
 
-exports.UA = UA
-function UA(family, major, minor, patch) {
-  this.family = family || 'Other';
-  this.major = major || null;
-  this.minor = minor || null;
-  this.patch = patch || null;
-}
-
-require('util').inherits(UA, OS)
-
-function _makeParsers(obj) {
+exports.makeParser = function makeParser(obj) {
   var regexp = new RegExp(obj.regex),
       famRep = obj.family_replacement,
       majorRep = obj.v1_replacement,
@@ -22,32 +19,14 @@ function _makeParsers(obj) {
     var m = str.match(regexp);
     if (!m) { return null; }
     
-    var family = famRep ? famRep.replace('$1', m[1]) : m[1],
-        major = majorRep || m[2],
-        minor = minorRep || m[3],
-        patch = patchRep || m[4];
-    
-    return new UA(family, major, minor, patch);
+    return {
+        userAgent: str,
+        family: famRep ? famRep.replace('$1', m[1]) : m[1],
+        major: majorRep || m[2] || null,
+        minor: minorRep || m[3] || null,
+        patch: patchRep || m[4] || null
+    };
   }
 
   return parser;
-}
-
-exports.makeParser = function(regexes) {
-  var parsers = regexes.map(_makeParsers)
-
-  function parser(str) {
-    var obj;
-
-    if (typeof str === 'string') {
-      for (var i = 0, length = parsers.length; i < length; i++) {
-        obj = parsers[i](str);
-        if (obj) { return obj; }
-      }
-    }
-    
-    return obj || new UA();
-  }
-
-  return parser;
-}
+};
